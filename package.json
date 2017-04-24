@@ -1,0 +1,19 @@
+{
+  "name": "indiegala-auto-enterer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.2",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
+    "path": "^0.12.7",
+    "typescript": "^2.2.2",
+    "webpack": "^2.4.1"
+  }
+}
