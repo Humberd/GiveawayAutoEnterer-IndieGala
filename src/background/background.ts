@@ -1,4 +1,14 @@
 import { Observable } from "rxjs";
-Observable.timer(0, 1000)
-    .switchMap(index => Observable.of(index))
-    .subscribe(index => console.log(index));
+import Port = chrome.runtime.Port;
+chrome.runtime.onConnect.addListener(function (port: Port) {
+  console.log(`Background - adding an onConnectListener:`);
+  console.log(port);
+  port.onMessage.addListener(function (msg: any) {
+    console.log(`Background receiving a message:`);
+    console.log(msg);
+  });
+
+  port.
+  Observable.timer(0, 1000)
+      .subscribe(item => port.postMessage({index: item}));
+});

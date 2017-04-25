@@ -4,9 +4,14 @@ import { Observable } from "rxjs";
 export class Foo {
   foo: string = "baa";
 }
-Observable.timer(0, 2000)
-    .subscribe(index => console.log(index));
 
-console.log("dupa");
-Observable.interval(3000)
-    .subscribe(item => console.log($));
+var port = chrome.runtime.connect({name: "knockknodck"});
+Observable.fromEventPattern((h: any) => {
+  port.onMessage.addListener(h);
+}, (h: any) => {
+  console.log("disconnecting");
+  port.onMessage.removeListener(h);
+}).subscribe(message => {
+  console.log("Client Receiving a message");
+  console.log(message);
+});
