@@ -3,14 +3,17 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-	entry: "./src/index.ts",
+	entry: {
+		index: ["./src/app/index.ts"],
+		background: ["./src/background/background.ts"]
+	},
 	watch: true,
 	watchOptions: {
 		aggregateTimeout: 300,
 		ignored: /node_modules/
 	},
 	output: {
-		filename: "index.js",
+		filename: "[name].js",
 		path: path.resolve(__dirname, "dist")
 	},
 	devtool: "source-map",
