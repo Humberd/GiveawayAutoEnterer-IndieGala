@@ -1,6 +1,8 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: {
@@ -23,10 +25,8 @@ module.exports = {
 			{
 				test: /\.ts?$/,
 				loader: "awesome-typescript-loader",
-				exclude: [
-					/\/node_modules\//
-				]
-			},
+				exclude: [/\/node_modules\//]
+			}
 		]
 	},
 	plugins: [
@@ -36,9 +36,14 @@ module.exports = {
 				to: "./"
 			}
 		]),
-		new CleanWebpackPlugin("dist")
+		new CleanWebpackPlugin("dist"),
+		new HtmlWebpackPlugin({
+			template: "./src/app/index.html",
+			filename: "./index.html",
+			chunks: ["index"]
+		})
 	],
 	resolve: {
-		extensions: [".ts"]
+		extensions: [".ts", ".css"]
 	}
 };

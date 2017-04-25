@@ -1,3 +1,3 @@
 export class Hellots {
-  foo = 534;
+  foo = 5342;
 }
