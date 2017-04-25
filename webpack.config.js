@@ -7,7 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 	entry: {
 		index: ["./src/app/index.ts"],
-		background: ["./src/background/background.ts"]
+		background: ["./src/background/background.ts"],
+		popup: ["./src/app/popup/popup.controller.ts"],
+		options: ["./src/app/options/options.controller.ts"]
 	},
 	watch: true,
 	watchOptions: {
@@ -34,16 +36,24 @@ module.exports = {
 			{
 				from: "manifest.json",
 				to: "./"
+			}, {
+				from: "./node_modules/jquery/dist/jquery.js",
+				to: "./"
 			}
 		]),
 		new CleanWebpackPlugin("dist"),
 		new HtmlWebpackPlugin({
-			template: "./src/app/index.html",
-			filename: "./index.html",
-			chunks: ["index"]
+			template: "./src/app/popup/popup.html",
+			filename: "./popup/popup.html",
+			chunks: ["popup"]
+		}),
+		new HtmlWebpackPlugin({
+			template: "./src/app/options/options.html",
+			filename: "./options/options.html",
+			chunks: ["options"]
 		})
 	],
 	resolve: {
-		extensions: [".ts", ".css"]
+		extensions: [".ts", ".js"]
 	}
 };
