@@ -1,12 +1,13 @@
 {
   "name": "indiegala-auto-enterer",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Chrome extension that helps to automate entering giveaways on indiegala.com",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": "https://github.com/Humberd/IndieGalaGiveawayAutoEnterer.git",
+  "author": "Maciej Sawicki",
   "license": "ISC",
   "devDependencies": {
     "@types/chrome": "0.0.46",

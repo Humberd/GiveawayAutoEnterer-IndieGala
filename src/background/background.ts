@@ -8,7 +8,6 @@ chrome.runtime.onConnect.addListener(function (port: Port) {
     console.log(msg);
   });
 
-  port.
   Observable.timer(0, 1000)
       .subscribe(item => port.postMessage({index: item}));
 });
