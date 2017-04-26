@@ -1,6 +1,7 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	entry: {
@@ -25,6 +26,13 @@ module.exports = {
 			}, {
 				test: /\.html$/,
 				loader: "html-loader"
+			}, {
+				test: /\.scss$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					//resolve-url-loader may be chained before sass-loader if necessary
+					use: ['css-loader', 'sass-loader']
+				})
 			}
 		]
 	},
@@ -38,6 +46,7 @@ module.exports = {
 				to: "./"
 			}
 		]),
+		new ExtractTextPlugin('style.css'),
 		new CleanWebpackPlugin("dist"),
 	],
 	resolve: {
