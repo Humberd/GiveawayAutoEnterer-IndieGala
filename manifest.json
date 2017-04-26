@@ -13,6 +13,9 @@
 			"matches": [
 				"https://www.indiegala.com/*"
 			],
+			"css": [
+				"styles.css"
+			],
 			"js": [
 				"jquery.js",
 				"index.js"

@@ -1,5 +1,5 @@
 import { Observable } from "rxjs/Observable";
-var temp = require("./CoinsDisplayView.html");
+const temp = require("./CoinsDisplayView.html");
 
 export class CoinsDisplayController {
   private domSelector: string = ".libd-right";

@@ -46,7 +46,7 @@ module.exports = {
 				to: "./"
 			}
 		]),
-		new ExtractTextPlugin('style.css'),
+		new ExtractTextPlugin('styles.css'),
 		new CleanWebpackPlugin("dist"),
 	],
 	resolve: {
