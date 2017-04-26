@@ -1,13 +1,11 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: {
 		index: ["./src/app/index.ts"],
-		background: ["./src/background/background.ts"],
-		rxjs: ["./node_modules/rxjs/Rx.js"]
+		background: ["./src/background/background.ts"]
 	},
 	watch: true,
 	watchOptions: {
@@ -24,6 +22,9 @@ module.exports = {
 				test: /\.ts?$/,
 				loader: "awesome-typescript-loader",
 				exclude: [/\/node_modules\//]
+			}, {
+				test: /\.html$/,
+				loader: "html-loader"
 			}
 		]
 	},
