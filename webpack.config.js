@@ -2,6 +2,7 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
 	entry: {
@@ -44,10 +45,14 @@ module.exports = {
 			}, {
 				from: "./node_modules/jquery/dist/jquery.js",
 				to: "./"
+			}, {
+				from: "./node_modules/rxjs/bundles/Rx.js",
+				to: "./"
 			}
 		]),
 		new ExtractTextPlugin('styles.css'),
 		new CleanWebpackPlugin("dist"),
+		new webpack.IgnorePlugin(/rxjs$/)
 	],
 	resolve: {
 		extensions: [".ts", ".js"]

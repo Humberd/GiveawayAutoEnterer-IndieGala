@@ -1,4 +1,3 @@
-import "rxjs";
 require("./styles.scss");
 import { CoinsDisplayController } from "./CoinsDisplay/CoinsDisplayController";
 
