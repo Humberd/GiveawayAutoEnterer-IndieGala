@@ -1,3 +1,10 @@
 .gae-coins {
-	color: white;
+	color: #ffffff;
+	display: flex;
+	padding: 5px 15px;
+	font-size: 2rem;
+
+	.gae-value {
+		padding-right: 5px;
+	}
 }
