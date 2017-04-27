@@ -31,7 +31,6 @@ module.exports = {
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					//resolve-url-loader may be chained before sass-loader if necessary
 					use: ['css-loader', 'sass-loader']
 				})
 			}
@@ -52,7 +51,7 @@ module.exports = {
 		]),
 		new ExtractTextPlugin('styles.css'),
 		new CleanWebpackPlugin("dist"),
-		new webpack.IgnorePlugin(/rxjs$/)
+		// new webpack.IgnorePlugin(/rxjs$/)
 	],
 	resolve: {
 		extensions: [".ts", ".js"]
