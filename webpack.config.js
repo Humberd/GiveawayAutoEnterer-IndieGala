@@ -47,6 +47,9 @@ module.exports = {
 			}, {
 				from: "./node_modules/rxjs/bundles/Rx.js",
 				to: "./"
+			}, {
+				from: "./src/background/hot-reload.js",
+				to: "./"
 			}
 		]),
 		new ExtractTextPlugin('styles.css'),

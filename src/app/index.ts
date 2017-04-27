@@ -1,4 +1,5 @@
 require("./styles.scss");
+import "rxjs";
 import { CoinsDisplayController } from "./CoinsDisplay/CoinsDisplayController";
 
 export class Main {
@@ -14,6 +15,8 @@ export class Main {
 
 const main: Main = new Main();
 main.init();
+
+console.log("dupa");
 
 
 // var port = chrome.runtime.connect({name: "knockknodck"});
