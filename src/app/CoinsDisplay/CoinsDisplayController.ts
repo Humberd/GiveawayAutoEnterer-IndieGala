@@ -22,35 +22,22 @@ export class CoinsDisplayController implements DisplayControllable {
         })
   }
 
-  loadDefaultCoinsValue(): void {
-    Observable.create(() => $(`${this.defaultCoinsDomSelector}`))
-        .map((elem: JQuery) => {
-          if (elem.length === 0) {
-            // return Observable.throw(new Error());
-            throw new Error("No default Coins Value!")
-          }
-
-          return elem[0];
-        })
-        .retryWhen(errors => {
-          return errors.scan((errorCount, err) => {
-            if (errorCount > 5) {
-              console.log(err);
-              throw err;
-            }
-            console.log("Getting a default Coins Value failed. Retrying...");
-            return errorCount + 1;
-          }, 0)
-              .delay(500)
-        })
-        .subscribe(
-            success => console.info("Successfully loaded a default Coins Value"),
-            error => console.warn("Could not get a default Coins Value")
-        );
-
-  }
-
   insertDomView(): void {
     $(this.templateDomSelector).prepend(this.template);
+  }
+
+  private loadDefaultCoinsValue(): void {
+    Observable.of(5)
+        .delay(2000)
+        .map(() => $(`${this.defaultCoinsDomSelector}`))
+        .subscribe((elem: JQuery) => {
+          if (elem.length !== 0) {
+            this.updateValue(elem.text())
+          }
+        });
+  }
+
+  public updateValue(value: number | string): void {
+    this.template.children(".gae-value").text(value);
   }
 }
