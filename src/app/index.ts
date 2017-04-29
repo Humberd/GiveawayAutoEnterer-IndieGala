@@ -1,33 +1,35 @@
 import "rxjs";
 import { TopBarController } from "./TopBar/TopBarController";
-import { EnterGiveawayRequest } from "./dto/EnterGiveawayRequest";
 import { HttpService } from "./http/HttpService";
+import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
 require("./styles.scss");
 
 export class Main {
   private topBar: TopBarController;
   private http: HttpService;
+  private giveawaysRetriever: PageGiveawaysRetriever;
 
   constructor() {
   }
 
   public init(): void {
+    this.instantiateObjects();
+    this.bindCallbacks();
+  }
+
+  private instantiateObjects(): void {
     this.topBar = new TopBarController();
     this.http = new HttpService();
+    this.giveawaysRetriever = new PageGiveawaysRetriever();
+  }
 
-    const requestBody: EnterGiveawayRequest = {
-      giv_id: "235797",
-      ticket_price: "5"
-    };
+  private bindCallbacks(): void {
+    this.topBar.getEnterButton()
+        .click(() => {
+          const giveaways = this.giveawaysRetriever.getPageGiveaways();
 
-    this.http.enterGiveaway(requestBody)
-        .subscribe(
-            response => {
-              console.log(response);
-            },
-            error => {
-              console.log(error);
-            })
+          console.table(giveaways);
+        });
   }
 }
 

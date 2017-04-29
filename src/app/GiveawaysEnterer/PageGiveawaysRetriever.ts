@@ -1,11 +1,10 @@
-import { Giveaway } from "./Giveaway";
+import { Giveaway } from "../models/Giveaway";
 export class PageGiveawaysRetriever {
   constructor() {
 
   }
 
   public getPageGiveaways(): Giveaway[] {
-    console.log("hello");
     const rawGiveaways = $(".tickets-col");
 
     const response: Giveaway[] = [];
