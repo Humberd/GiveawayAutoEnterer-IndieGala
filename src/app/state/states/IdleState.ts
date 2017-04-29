@@ -3,6 +3,8 @@ import { EntererContext } from "../EntererContext";
 import { InProgressState } from "./InProgressState";
 import { PageGiveawaysRetriever } from "../../GiveawaysEnterer/PageGiveawaysRetriever";
 import { TopBarController } from "../../TopBar/TopBarController";
+import { Observable } from "rxjs/Observable";
+import { Giveaway } from "../../models/Giveaway";
 
 export class IdleState implements State {
   constructor(private giveawaysRetriever: PageGiveawaysRetriever,
@@ -14,9 +16,13 @@ export class IdleState implements State {
     this.topBarCtrl.disableEnterButton();
     entererContext.changeCurrentState(new InProgressState(this.giveawaysRetriever, this.topBarCtrl));
 
-    setTimeout(() => {
-      entererContext.stopEntering();
-    }, 1000);
+
+    Observable.from(this.giveawaysRetriever.getPageGiveaways())
+        /*Get only not entered giveaways*/
+        .filter((giveaway: Giveaway) => !giveaway.isEntered)
+        .count()
+        .do(item => console.log(item))
+        .subscribe(() => entererContext.stopEntering())
 
     // this.giveawaysRetriever.getPageGiveaways();
 

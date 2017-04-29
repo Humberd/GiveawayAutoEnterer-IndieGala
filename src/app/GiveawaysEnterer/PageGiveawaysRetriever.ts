@@ -9,11 +9,15 @@ export class PageGiveawaysRetriever {
 
     const response: Giveaway[] = [];
 
-    rawGiveaways.each((index, rawGiveaway) =>{
-      const giveaway:Giveaway = {
-        minLevel: this.getMinLevel($(rawGiveaway)),
-        coinsPrice: this.getCoinsPrice($(rawGiveaway)),
-        id: this.getId($(rawGiveaway))
+    rawGiveaways.each((index, rawGiveaway) => {
+      const wrappedRawGiveaway = $(rawGiveaway);
+
+      const giveaway: Giveaway = {
+        minLevel: this.getMinLevel(wrappedRawGiveaway),
+        coinsPrice: this.getCoinsPrice(wrappedRawGiveaway),
+        id: this.getId(wrappedRawGiveaway),
+        isEntered: this.getIsEntered(wrappedRawGiveaway),
+        element: wrappedRawGiveaway
       };
       response.push(giveaway);
     });
@@ -63,5 +67,14 @@ export class PageGiveawaysRetriever {
     const rawText = elem.find(".ticket-price > strong").text();
 
     return parseInt(rawText);
+  }
+
+  private getIsEntered(elem: JQuery): boolean {
+    if (elem.length !== 1) {
+      throw Error(`getCoinsPrice - Elem length must be 1, but instead is: ${elem}`);
+    }
+    const couponElem = elem.find(".giv-coupon");
+
+    return !couponElem.length;
   }
 }

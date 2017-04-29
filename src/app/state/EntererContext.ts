@@ -10,15 +10,24 @@ export class EntererContext {
     this.changeCurrentState(new IdleState(giveawaysRetriever, this.topBarCtrl));
   }
 
+  /*
+    Changes current state and updates a status name in a topBar
+   */
   public changeCurrentState(state: State): void {
     this.currentState = state;
     this.topBarCtrl.updateCurrentStateValue(state.getName());
   }
 
+  /*
+    Starts entering giveaways
+   */
   public startEntering(): void {
     this.currentState.start(this);
   }
 
+  /*
+    Stops entering giveaways
+   */
   public stopEntering(): void {
     this.currentState.stop(this);
   }
