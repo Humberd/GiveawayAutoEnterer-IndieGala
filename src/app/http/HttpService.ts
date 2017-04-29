@@ -11,13 +11,15 @@ export class HttpService {
       throw Error(`enterGiveaway() - Body must be an object, but instead is: ${body}`);
     }
 
-    $.ajax("https://www.indiegala.com/giveaways/new_entry", {
+    const promise = $.ajax({
+      url: "https://www.indiegala.com/giveaways/new_entry",
       method: "POST",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(body)
-    })
+    }).promise();
 
-    return Observable.fromEventPattern()
+    //status: duplicate, server_error, not_available, ok
+    return Observable.fromPromise(<any> promise);
   }
 }
