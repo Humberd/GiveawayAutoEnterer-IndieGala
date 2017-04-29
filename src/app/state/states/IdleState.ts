@@ -2,7 +2,7 @@ import { State } from "../State";
 import { EntererContext } from "../EntererContext";
 import { InProgressState } from "./InProgressState";
 import { PageGiveawaysRetriever } from "../../GiveawaysEnterer/PageGiveawaysRetriever";
-import { TopBarController } from "../../TopBar/TopBarController";
+import { TopBarController } from "../../views/TopBar/TopBarController";
 import { Observable } from "rxjs/Observable";
 import { Giveaway } from "../../models/Giveaway";
 
@@ -20,8 +20,8 @@ export class IdleState implements State {
     Observable.from(this.giveawaysRetriever.getPageGiveaways())
         /*Get only not entered giveaways*/
         .filter((giveaway: Giveaway) => !giveaway.isEntered)
-        .count()
-        .do(item => console.log(item))
+        .take(1)
+        // .do((giveaway: Giveaway) => console.log(giveaway))
         .subscribe(() => entererContext.stopEntering())
 
     // this.giveawaysRetriever.getPageGiveaways();

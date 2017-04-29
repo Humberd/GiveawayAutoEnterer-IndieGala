@@ -2,7 +2,7 @@ import { State } from "../State";
 import { EntererContext } from "../EntererContext";
 import { IdleState } from "./IdleState";
 import { PageGiveawaysRetriever } from "../../GiveawaysEnterer/PageGiveawaysRetriever";
-import { TopBarController } from "../../TopBar/TopBarController";
+import { TopBarController } from "../../views/TopBar/TopBarController";
 
 export class InProgressState implements State {
   constructor(private giveawaysRetriever: PageGiveawaysRetriever,

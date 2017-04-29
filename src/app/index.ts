@@ -1,5 +1,5 @@
 import "rxjs";
-import { TopBarController } from "./TopBar/TopBarController";
+import { TopBarController } from "./views/TopBar/TopBarController";
 import { HttpService } from "./http/HttpService";
 import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
 import { Observable } from "rxjs/Observable";

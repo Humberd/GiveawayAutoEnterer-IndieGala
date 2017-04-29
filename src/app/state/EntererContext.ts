@@ -1,7 +1,7 @@
 import { State } from "./State";
 import { IdleState } from "./states/IdleState";
 import { PageGiveawaysRetriever } from "../GiveawaysEnterer/PageGiveawaysRetriever";
-import { TopBarController } from "../TopBar/TopBarController";
+import { TopBarController } from "../views/TopBar/TopBarController";
 export class EntererContext {
   private currentState: State;
 
