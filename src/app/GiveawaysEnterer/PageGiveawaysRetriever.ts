@@ -1,7 +1,8 @@
 import { Giveaway } from "../models/Giveaway";
-export class PageGiveawaysRetriever {
-  constructor() {
+import { HttpService } from "../http/HttpService";
 
+export class PageGiveawaysRetriever {
+  constructor(private httpService: HttpService) {
   }
 
   public getPageGiveaways(): Giveaway[] {
@@ -12,13 +13,13 @@ export class PageGiveawaysRetriever {
     rawGiveaways.each((index, rawGiveaway) => {
       const wrappedRawGiveaway = $(rawGiveaway);
 
-      const giveaway: Giveaway = {
-        minLevel: this.getMinLevel(wrappedRawGiveaway),
-        coinsPrice: this.getCoinsPrice(wrappedRawGiveaway),
-        id: this.getId(wrappedRawGiveaway),
-        isEntered: this.getIsEntered(wrappedRawGiveaway),
-        element: wrappedRawGiveaway
-      };
+      const giveaway = new Giveaway(this.httpService);
+      giveaway.minLevel = this.getMinLevel(wrappedRawGiveaway);
+      giveaway.coinsPrice = this.getCoinsPrice(wrappedRawGiveaway);
+      giveaway.id = this.getId(wrappedRawGiveaway);
+      giveaway.isEntered = this.getIsEntered(wrappedRawGiveaway);
+      giveaway.element = wrappedRawGiveaway;
+
       response.push(giveaway);
     });
 

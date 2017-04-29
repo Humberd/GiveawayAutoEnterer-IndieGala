@@ -23,7 +23,7 @@ export class Main {
   private instantiateObjects(): void {
     this.topBar = new TopBarController();
     this.http = new HttpService();
-    this.giveawaysRetriever = new PageGiveawaysRetriever();
+    this.giveawaysRetriever = new PageGiveawaysRetriever(this.http);
     this.entererContext = new EntererContext(
         this.giveawaysRetriever,
         this.topBar);
