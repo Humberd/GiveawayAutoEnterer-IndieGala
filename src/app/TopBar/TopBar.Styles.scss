@@ -14,8 +14,24 @@
 		}
 	}
 	.gae-enter-button {
+		$bgcColor: #554cff;
+
 		margin-left: 30px;
 		padding: 0.355rem 1rem;
-		background-color: #554cff;
+		background-color: $bgcColor;
+
+		&:hover {
+			background-color: lighten($bgcColor, 5%);
+		}
+
+		&[disabled] {
+			background-color: #6e6e6e;
+		}
+	}
+	.gae-state {
+		display: flex;
+		.gae-text {
+			margin-right: 5px;
+		}
 	}
 }

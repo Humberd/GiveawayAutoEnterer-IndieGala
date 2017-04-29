@@ -2,12 +2,15 @@ import "rxjs";
 import { TopBarController } from "./TopBar/TopBarController";
 import { HttpService } from "./http/HttpService";
 import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
+import { Observable } from "rxjs/Observable";
+import { EntererContext } from "./state/EntererContext";
 require("./styles.scss");
 
 export class Main {
   private topBar: TopBarController;
   private http: HttpService;
   private giveawaysRetriever: PageGiveawaysRetriever;
+  private entererContext: EntererContext;
 
   constructor() {
   }
@@ -21,15 +24,15 @@ export class Main {
     this.topBar = new TopBarController();
     this.http = new HttpService();
     this.giveawaysRetriever = new PageGiveawaysRetriever();
+    this.entererContext = new EntererContext(
+        this.giveawaysRetriever,
+        this.topBar);
   }
 
   private bindCallbacks(): void {
-    this.topBar.getEnterButton()
-        .click(() => {
-          const giveaways = this.giveawaysRetriever.getPageGiveaways();
 
-          console.table(giveaways);
-        });
+    Observable.fromEvent(this.topBar.getEnterButton(), "click")
+        .subscribe((item) => this.entererContext.startEntering());
   }
 }
 

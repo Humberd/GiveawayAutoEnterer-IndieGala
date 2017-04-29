@@ -61,4 +61,24 @@ export class TopBarController {
 
     return button;
   }
+
+  public enableEnterButton(): void {
+    this.getEnterButton().prop("disabled", false);
+  }
+
+  public disableEnterButton(): void {
+    this.getEnterButton().prop("disabled", true);
+  }
+
+  /*
+    Updates current state name
+   */
+  public updateCurrentStateValue(value: string): void {
+    const elem = this.template.find(".gae-state .gae-value");
+    if (!elem.length) {
+      throw Error("updateCurrentStateValue() - Cannot find .gae-state .gae-value");
+    }
+
+    elem.text(value);
+  }
 }
