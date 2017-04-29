@@ -1,8 +1,7 @@
 import { Observable } from "rxjs/Observable";
-import { DisplayControllable } from "../DisplayControllable";
 const rawTemplate = require("./CoinsDisplayView.html");
 
-export class CoinsDisplayController implements DisplayControllable {
+export class CoinsDisplayController {
   private readonly templateDomSelector = ".libd-right";
   private readonly defaultCoinsDomSelector = ".account-galamoney";
 
@@ -15,14 +14,14 @@ export class CoinsDisplayController implements DisplayControllable {
   }
 
   /*Remove garbage elements*/
-  cleanDomSpace(): void {
+  private cleanDomSpace(): void {
     Observable.from([1, 2, 3])
         .subscribe(item => {
           $(`${this.templateDomSelector} > *:first-child`).remove();
         })
   }
 
-  insertDomView(): void {
+  private insertDomView(): void {
     $(this.templateDomSelector).prepend(this.template);
   }
 
