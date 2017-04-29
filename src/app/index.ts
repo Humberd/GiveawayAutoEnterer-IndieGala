@@ -1,25 +1,42 @@
 import { EnterButtonController } from "./GiveawaysEnterer/EnterButtonController";
 require("./styles.scss");
 import "rxjs";
-import { CoinsDisplayController } from "./CoinsDisplay/CoinsDisplayController";
-import { GiveawaysEntererService } from "./GiveawaysEnterer/GiveawaysEntererService";
+import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
+import { TopBarController } from "./TopBar/TopBarController";
 
 export class Main {
-  private coinsDisplayController: CoinsDisplayController;
   private enterButtonController: EnterButtonController;
-  private enterService: GiveawaysEntererService;
+  private enterService: PageGiveawaysRetriever;
+  private topBar: TopBarController;
 
   constructor() {
   }
 
   public init(): void {
-    this.coinsDisplayController = new CoinsDisplayController();
-    this.enterButtonController = new EnterButtonController();
-    this.enterService = new GiveawaysEntererService();
-    setTimeout(() => {
-      const giveaways = this.enterService.getPageGiveaways();
-      console.log(giveaways);
-    }, 1000);
+    this.topBar = new TopBarController();
+    // this.enterButtonController = new EnterButtonController();
+    // this.enterService = new PageGiveawaysRetriever();
+    // const giveaways = this.enterService.getPageGiveaways();
+    // console.table(giveaways);
+    const requestBody: EnterGiveawayRequest = {
+      giv_id: "238490",
+      ticket_price: "1"
+    };
+
+    $.ajax("https://www.indiegala.com/giveaways/new_entrydd", {
+      method: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(requestBody),
+      success: function () {
+        console.log("success");
+        console.log(arguments);
+      },
+      error: function () {
+        console.log("error");
+        console.log(arguments);
+      }
+    })
   }
 }
 

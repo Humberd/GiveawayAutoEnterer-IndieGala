@@ -1,5 +1,5 @@
 import { Giveaway } from "./Giveaway";
-export class GiveawaysEntererService {
+export class PageGiveawaysRetriever {
   constructor() {
 
   }
@@ -12,7 +12,7 @@ export class GiveawaysEntererService {
 
     rawGiveaways.each((index, rawGiveaway) =>{
       const giveaway:Giveaway = {
-        minLevel: this.getMinLevel(rawGiveaway),
+        minLevel: this.getMinLevel($(rawGiveaway)),
         coinsPrice: this.getCoinsPrice($(rawGiveaway)),
         id: this.getId($(rawGiveaway))
       };
@@ -27,21 +27,23 @@ export class GiveawaysEntererService {
       throw Error(`getMinLevel - Elem length must be 1, but instead is: ${elem}`);
     }
 
-    const children = elem.children(".type-level-cont");
-
-    const rawText = elem.children(".type-level-cont").text();
+    const rawText = elem.find(".type-level-cont").text();
     const index = rawText.indexOf("+");
 
 
     let reversedResult: any[] = [];
 
-    // for (let i = index - 1; ; --i) {
-    //   if (rawText[i] === " ") {
-    //     break;
-    //   }
-    //
-    //   reversedResult.push(rawText[i])
-    // }
+    for (let i = index - 1; ; --i) {
+      if (rawText[i] === " ") {
+        break;
+      }
+
+      if (i < 0) {
+        throw Error("getMinLevel - Infinite loops");
+      }
+
+      reversedResult.push(rawText[i])
+    }
 
     return parseInt(reversedResult.reverse().join(""));
   }
@@ -50,7 +52,7 @@ export class GiveawaysEntererService {
     if (elem.length !== 1) {
       throw Error(`getId - Elem length must be 1, but instead is: ${elem}`);
     }
-    const rawText = elem.children(".ticket-right > .relative[rel]").attr("rel");
+    const rawText = elem.find(".ticket-right > .relative[rel]").attr("rel");
 
     return parseInt(rawText);
   }
@@ -59,7 +61,7 @@ export class GiveawaysEntererService {
     if (elem.length !== 1) {
       throw Error(`getCoinsPrice - Elem length must be 1, but instead is: ${elem}`);
     }
-    const rawText = elem.children(".ticket-price > strong").text();
+    const rawText = elem.find(".ticket-price > strong").text();
 
     return parseInt(rawText);
   }

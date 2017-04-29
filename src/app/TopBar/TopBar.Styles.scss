@@ -1,0 +1,21 @@
+.gae-bar {
+	display: flex;
+	justify-content: space-around;
+
+	padding: 5px 15px;
+	font-size: 2rem;
+	color: #ffffff;
+
+	.gae-coins {
+		display: flex;
+
+		.gae-value {
+			padding-right: 5px;
+		}
+	}
+	.gae-enter-button {
+		margin-left: 30px;
+		padding: 0.355rem 1rem;
+		background-color: #554cff;
+	}
+}
