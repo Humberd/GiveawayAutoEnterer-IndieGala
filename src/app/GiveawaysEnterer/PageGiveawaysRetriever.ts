@@ -5,35 +5,30 @@ export class PageGiveawaysRetriever {
   constructor(private httpService: HttpService) {
   }
 
-  public getPageGiveaways(): Giveaway[] {
-    const rawGiveaways = $(".tickets-col");
+  public getGiveaway(elem: JQuery): Giveaway {
+    const giveaway = new Giveaway(this.httpService);
+    giveaway.minLevel = this.getMinLevel(elem);
+    giveaway.coinsPrice = this.getCoinsPrice(elem);
+    giveaway.id = this.getId(elem);
+    giveaway.isEntered = this.getIsEntered(elem);
+    giveaway.element = elem;
 
-    const response: Giveaway[] = [];
-
-    rawGiveaways.each((index, rawGiveaway) => {
-      const wrappedRawGiveaway = $(rawGiveaway);
-
-      const giveaway = new Giveaway(this.httpService);
-      giveaway.minLevel = this.getMinLevel(wrappedRawGiveaway);
-      giveaway.coinsPrice = this.getCoinsPrice(wrappedRawGiveaway);
-      giveaway.id = this.getId(wrappedRawGiveaway);
-      giveaway.isEntered = this.getIsEntered(wrappedRawGiveaway);
-      giveaway.element = wrappedRawGiveaway;
-
-      response.push(giveaway);
-    });
-
-    return response;
+    return giveaway;
   }
 
   private getMinLevel(elem: any): number {
     if (elem.length !== 1) {
-      throw Error(`getMinLevel - Elem length must be 1, but instead is: ${elem}`);
+      throw Error(`getMinLevel() - Elem length must be 1, but instead is: ${elem}`);
     }
 
-    const rawText = elem.find(".type-level-cont").text();
-    const index = rawText.indexOf("+");
+    const rawElement =  elem.find(".type-level-cont");
 
+    if (!rawElement.length) {
+      throw Error("getMinLevel() - RawElement is empty");
+    }
+
+    const rawText = rawElement.text();
+    const index = rawText.indexOf("+");
 
     let reversedResult: any[] = [];
 
@@ -54,7 +49,7 @@ export class PageGiveawaysRetriever {
 
   private getId(elem: JQuery): number {
     if (elem.length !== 1) {
-      throw Error(`getId - Elem length must be 1, but instead is: ${elem}`);
+      throw Error(`getId() - Elem length must be 1, but instead is: ${elem}`);
     }
     const rawText = elem.find(".ticket-right > .relative[rel]").attr("rel");
 
@@ -63,7 +58,7 @@ export class PageGiveawaysRetriever {
 
   private getCoinsPrice(elem: JQuery): number {
     if (elem.length !== 1) {
-      throw Error(`getCoinsPrice - Elem length must be 1, but instead is: ${elem}`);
+      throw Error(`getCoinsPrice() - Elem length must be 1, but instead is: ${elem}`);
     }
     const rawText = elem.find(".ticket-price > strong").text();
 
@@ -72,7 +67,7 @@ export class PageGiveawaysRetriever {
 
   private getIsEntered(elem: JQuery): boolean {
     if (elem.length !== 1) {
-      throw Error(`getCoinsPrice - Elem length must be 1, but instead is: ${elem}`);
+      throw Error(`getIsEntered() - Elem length must be 1, but instead is: ${elem}`);
     }
     const couponElem = elem.find(".giv-coupon");
 

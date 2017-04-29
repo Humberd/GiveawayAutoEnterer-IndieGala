@@ -20,7 +20,7 @@ export class CouponsController {
 
 
   /*
-    Removed a link from a coupon
+    Removes a link from a coupon
    */
   private cleanDomSpace(): void {
     this.getCouponsObs()
@@ -28,7 +28,27 @@ export class CouponsController {
         .subscribe((couponLink: JQuery) => couponLink.remove())
   }
 
+  /*
+    Remove a coupon from a DOM
+   */
+  public removeCoupon(elem: JQuery): void {
+    const couponElem = elem.find(".giv-coupon");
+    if (!couponElem.length) {
+      throw Error("removeCoupon() - cannot remove a Coupon");
+    }
 
+    couponElem.remove();
+  }
+
+  public addCouponAnimation(elem: JQuery): void {
+    const couponElem = elem.find(".giv-coupon");
+    if (!couponElem.length) {
+      throw Error("removeCoupon() - cannot remove a Coupon");
+    }
+
+    //todo coupon animation
+    console.log("Animating a coupon...");
+  }
 
   /*
     Gets coupons as Observalbe

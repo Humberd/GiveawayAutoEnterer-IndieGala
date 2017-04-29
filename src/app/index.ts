@@ -5,6 +5,9 @@ import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetrieve
 import { Observable } from "rxjs/Observable";
 import { EntererContext } from "./state/EntererContext";
 import { CouponsController } from "./views/Coupon/CouponsController";
+import { AjaxRequest } from "rxjs/Rx";
+import { Giveaway } from "./models/Giveaway";
+import { IdleState } from "./state/states/IdleState";
 require("./styles.scss");
 
 export class Main {
@@ -20,6 +23,7 @@ export class Main {
   public init(): void {
     this.instantiateObjects();
     this.bindCallbacks();
+    this.idleContext();
   }
 
   private instantiateObjects(): void {
@@ -29,17 +33,29 @@ export class Main {
     this.giveawaysRetriever = new PageGiveawaysRetriever(this.http);
     this.entererContext = new EntererContext(
         this.giveawaysRetriever,
-        this.topBar);
+        this.topBar,
+        this.coupons);
   }
 
   private bindCallbacks(): void {
-    Observable.fromEvent(this.topBar.getEnterButton(), "click")
-        .subscribe((item) => this.entererContext.startEntering());
+    // Observable.fromEvent(this.topBar.getEnterButton(), "click")
+    //     .switchMap(() => this.coupons.getCouponsObs())
+    //     .subscribe((item: JQuery) => item.click());
 
 
     Observable.fromEvent(this.coupons.getCoupons(), "click")
-        .subscribe((item) => console.log("clicked"));
+        .map((item: JQueryEventObject) => $(item.currentTarget))
+        .map((item: JQuery) => item.parents(".tickets-col"))
+        .map((item: JQuery) => this.giveawaysRetriever.getGiveaway(item))
+        .do((item: Giveaway) => console.log(item))
+        .subscribe((item) => this.entererContext.startEntering([item]));
+  }
 
+  private idleContext(): void {
+    this.entererContext.changeCurrentState(new IdleState(
+        this.giveawaysRetriever,
+        this.topBar,
+        this.coupons));
   }
 }
 
