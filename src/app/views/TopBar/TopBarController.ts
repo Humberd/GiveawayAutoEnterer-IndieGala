@@ -21,7 +21,7 @@ export class TopBarController {
 
   /*
     Prepares a place in a DOM to insert a template.
-    Removes elements.
+    Removes unneccessary element a the top of the page.
    */
   private cleanDomSpace(): void {
     Observable.from([1, 2, 3])
