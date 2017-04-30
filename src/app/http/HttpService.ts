@@ -19,7 +19,7 @@ export class HttpService {
       data: JSON.stringify(body)
     }).promise();
 
-    //status: duplicate, server_error, not_available, unauthorized, ok
+    //status: duplicate, server_error, not_available, unauthorized, ok, insufficient_credit
     return Observable.fromPromise(<any> promise);
   }
 }

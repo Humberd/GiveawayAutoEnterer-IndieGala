@@ -2,10 +2,12 @@ import { Giveaway } from "./Giveaway";
 import { HttpService } from "../http/HttpService";
 import { Observable } from "rxjs/Observable";
 import { TopBarController } from "../views/TopBar/TopBarController";
+import { AppState } from "../AppState";
 
 export class PageGiveawaysRetriever {
   constructor(private httpService: HttpService,
-              private topBarCtrl: TopBarController) {
+              private topBarCtrl: TopBarController,
+              private appState: AppState) {
   }
 
   public getAllGiveaways(): Giveaway[] {
@@ -25,7 +27,8 @@ export class PageGiveawaysRetriever {
   public getGiveaway(elem: JQuery): Giveaway {
     const giveaway = new Giveaway(
         this.httpService,
-        this.topBarCtrl);
+        this.topBarCtrl,
+        this.appState);
     giveaway.minLevel = this.getMinLevel(elem);
     giveaway.coinsPrice = this.getCoinsPrice(elem);
     giveaway.id = this.getId(elem);

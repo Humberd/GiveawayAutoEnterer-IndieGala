@@ -2,6 +2,7 @@
 	display: flex;
 	justify-content: space-around;
 
+	margin-top: 10px;
 	padding: 5px 15px;
 	font-size: 2rem;
 	color: #ffffff;
@@ -13,21 +14,43 @@
 			padding-right: 5px;
 		}
 	}
-	.gae-enter-button {
-		$bgcColor: #554cff;
-
-		margin-left: 30px;
-		padding: 0.355rem 1rem;
-		background-color: $bgcColor;
-
-		&:hover {
-			background-color: lighten($bgcColor, 5%);
+	.gae-buttons {
+		display: flex;
+		button {
+			padding: 0.355rem 1rem;
+		}
+		button:not(:last-child) {
+			margin-right: 10px;
 		}
 
-		&[disabled] {
-			background-color: #6e6e6e;
+		.gae-enter-button {
+			$bgcColor: #4250c1;
+
+			background-color: $bgcColor;
+
+			&:hover {
+				background-color: darken($bgcColor, 5%);
+			}
+
+			&[disabled] {
+				background-color: #6e6e6e;
+			}
+		}
+		.gae-stop-button {
+			$bgcColor: #aa2b29;
+
+			background-color: $bgcColor;
+
+			&:hover {
+				background-color: darken($bgcColor, 5%);
+			}
+
+			&[disabled] {
+				background-color: #6e6e6e;
+			}
 		}
 	}
+
 	.gae-state {
 		display: flex;
 		.gae-text {

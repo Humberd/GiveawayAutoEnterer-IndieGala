@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { GiveawayState } from "./GiveawayState";
 import { TopBarController } from "../views/TopBar/TopBarController";
+import { AppState } from "../AppState";
 const animationTemplate = require("../views/Coupon/CouponAnimation.html");
 
 export class Giveaway {
@@ -20,7 +21,8 @@ export class Giveaway {
   private readonly animationElem: JQuery;
 
   constructor(private httpService: HttpService,
-              private topBarCtrl: TopBarController) {
+              private topBarCtrl: TopBarController,
+              private appState: AppState) {
     this.state = GiveawayState.IDLE;
     this.animationElem = $(animationTemplate);
   }
@@ -37,40 +39,40 @@ export class Giveaway {
     return this.httpService.enterGiveaway(body);
   }
 
-  public enterGiveaway(): void {
+  public enterGiveaway(): Observable<EnterGiveawayResponse> {
     if (this.state === GiveawayState.IN_PROGRESS) {
       throw Error("Cannot enter Giveaway, because it's already IN_PROGRESS");
     }
 
-    this.state = GiveawayState.IN_PROGRESS;
-    this.showLoadingFrame()
-        .switchMap(() => this.startLoadingAnimation())
-        .subscribe();
-
-    this.sendEnter()
-        .subscribe(
-            response => {
-              if (response.status === "ok") {
-                this.successRequest(response);
-              } else {
-                this.failRequest(response);
-              }
-            }, error => {
-              this.failRequest(error);
-            }, () => {
-              this.state = GiveawayState.IDLE;
-            })
-
+    return this.showLoadingFrame()
+        .do(() => this.state = GiveawayState.IN_PROGRESS)
+        .flatMap(() => this.startLoadingAnimation())
+        .flatMap(() => this.sendEnter())
+        .do((response: EnterGiveawayResponse) => {
+          if (response.status === "ok") {
+            this.successRequest(response);
+          } else {
+            this.failRequest(response);
+          }
+          this.state = GiveawayState.IDLE;
+        })
+        .catch(error => {
+          this.failRequest(error);
+          this.state = GiveawayState.IDLE;
+          throw error;
+        });
   }
 
   private successRequest(response: EnterGiveawayResponse): void {
     this.isEntered = true;
     this.topBarCtrl.updateCoinsValue(response.new_amount);
+    this.appState.userCoins = response.new_amount;
+
     this.stopLoadingAnimation()
-        .switchMap(() => this.startSuccessAnimation())
+        .flatMap(() => this.startSuccessAnimation())
         .delay(5000)
-        .switchMap(() => this.stopSuccessAnimation())
-        .switchMap(() => this.hideLoadingFrame())
+        .flatMap(() => this.stopSuccessAnimation())
+        .flatMap(() => this.hideLoadingFrame())
         .do(() => this.removeCoupon())
         .subscribe();
   }
@@ -79,10 +81,10 @@ export class Giveaway {
     console.warn(`Entering a '${this.title}' giveaway failed. Reason: ${response.status}`);
 
     this.stopLoadingAnimation()
-        .switchMap(() => this.startErrorAnimation())
+        .flatMap(() => this.startErrorAnimation())
         .delay(5000)
-        .switchMap(() => this.stopErrorAnimation())
-        .switchMap(() => this.hideLoadingFrame())
+        .flatMap(() => this.stopErrorAnimation())
+        .flatMap(() => this.hideLoadingFrame())
         .subscribe();
   }
 
@@ -116,7 +118,8 @@ export class Giveaway {
 
     this.enterClickSub = Observable.fromEvent(this.element.find(".giv-coupon"), "click")
         .filter(() => this.state === GiveawayState.IDLE)
-        .subscribe(() => this.enterGiveaway())
+        .flatMap(() => this.enterGiveaway())
+        .subscribe()
   }
 
   /*

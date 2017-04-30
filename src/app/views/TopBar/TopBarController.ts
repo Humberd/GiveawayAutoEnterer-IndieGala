@@ -71,6 +71,25 @@ export class TopBarController {
   }
 
   /*
+    Get stop button
+   */
+  public getStopButton(): JQuery {
+    const button = this.template.find(".gae-stop-button");
+    if (!button.length) {
+      throw Error("getEnterButton() - Cannot find .gae-stop-button");
+    }
+
+    return button;
+  }
+
+  public enableStopButton(): void {
+    this.getStopButton().prop("disabled", false);
+  }
+
+  public disableStopButton(): void {
+    this.getStopButton().prop("disabled", true);
+  }
+  /*
     Updates current state name
    */
   public updateCurrentStateValue(value: string): void {
