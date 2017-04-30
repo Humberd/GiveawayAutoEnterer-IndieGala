@@ -2,12 +2,14 @@ import "rxjs";
 import { TopBarController } from "./views/TopBar/TopBarController";
 import { HttpService } from "./http/HttpService";
 import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
-import { CouponsController } from "./views/Coupon/CouponsController";
+import { AppState } from "./GiveawaysEnterer/AppState";
+import { Observable } from "rxjs/Observable";
+import { Giveaway } from "./models/Giveaway";
 require("./styles.scss");
 
 export class Main {
+  private appState: AppState;
   private topBarController: TopBarController;
-  private couponsController: CouponsController;
   private httpService: HttpService;
   private giveawaysRetriever: PageGiveawaysRetriever;
 
@@ -20,24 +22,27 @@ export class Main {
   }
 
   private instantiateObjects(): void {
+    this.appState = new AppState();
     this.topBarController = new TopBarController();
-    this.couponsController = new CouponsController();
     this.httpService = new HttpService();
-    this.giveawaysRetriever = new PageGiveawaysRetriever(this.httpService);
+    this.giveawaysRetriever = new PageGiveawaysRetriever(
+        this.httpService,
+        this.topBarController);
   }
 
   private bindCallbacks(): void {
+    Observable.from(this.giveawaysRetriever.getAllGiveaways())
+        .do((giveaway: Giveaway) => giveaway.unbindCouponDefaultClick())
+        .do((giveaway: Giveaway) => giveaway.bindCouponEnterClick())
+        .do((giveaway: Giveaway) => giveaway.addAnimationsElement())
+        .toArray()
+        .subscribe((giveaways: Giveaway[]) => this.appState.giveaways = giveaways);
+
+    console.log(this.appState);
     // Observable.fromEvent(this.topBar.getEnterButton(), "click")
     //     .switchMap(() => this.coupons.getCouponsObs())
     //     .subscribe((item: JQuery) => item.click());
 
-
-    // Observable.fromEvent(this.coupons.getCoupons(), "click")
-    //     .map((item: JQueryEventObject) => $(item.currentTarget))
-    //     .map((item: JQuery) => item.parents(".tickets-col"))
-    //     .map((item: JQuery) => this.giveawaysRetriever.getGiveaway(item))
-    //     .do((item: Giveaway) => console.log(item))
-    //     .subscribe((item) => this.entererContext.startEntering([item]));
   }
 }
 

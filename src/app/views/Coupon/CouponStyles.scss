@@ -1,7 +1,40 @@
-.giv-coupon {
+.giv-coupon:first-child {
 	&:hover {
 		cursor: pointer;
 		color: #aaaaaa;
 		user-select: none;
+	}
+}
+
+@keyframes endlessRotation {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.gae-hide {
+	display: none !important;
+}
+
+.gae-loading-frame {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 2rem;
+
+	.animate {
+		animation: endlessRotation 1.5s linear infinite;
+	}
+
+	.success {
+		color: #3aaa4b;
+	}
+
+	.error {
+		color: #aa2b29;
 	}
 }

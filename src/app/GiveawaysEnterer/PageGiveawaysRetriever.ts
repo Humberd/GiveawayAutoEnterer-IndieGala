@@ -1,16 +1,36 @@
 import { Giveaway } from "../models/Giveaway";
 import { HttpService } from "../http/HttpService";
+import { Observable } from "rxjs/Observable";
+import { TopBarController } from "../views/TopBar/TopBarController";
 
 export class PageGiveawaysRetriever {
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService,
+              private topBarCtrl: TopBarController) {
+  }
+
+  public getAllGiveaways(): Giveaway[] {
+    const rawGiveawayElements = $(".tickets-col");
+
+    const result: Giveaway[] = [];
+
+    rawGiveawayElements.each((intex, elem) => {
+      const wrappedElem = $(elem);
+
+      result.push(this.getGiveaway(wrappedElem));
+    });
+
+    return result;
   }
 
   public getGiveaway(elem: JQuery): Giveaway {
-    const giveaway = new Giveaway(this.httpService);
+    const giveaway = new Giveaway(
+        this.httpService,
+        this.topBarCtrl);
     giveaway.minLevel = this.getMinLevel(elem);
     giveaway.coinsPrice = this.getCoinsPrice(elem);
     giveaway.id = this.getId(elem);
     giveaway.isEntered = this.getIsEntered(elem);
+    giveaway.title = this.getTitle(elem);
     giveaway.element = elem;
 
     return giveaway;
@@ -21,7 +41,7 @@ export class PageGiveawaysRetriever {
       throw Error(`getMinLevel() - Elem length must be 1, but instead is: ${elem}`);
     }
 
-    const rawElement =  elem.find(".type-level-cont");
+    const rawElement = elem.find(".type-level-cont");
 
     if (!rawElement.length) {
       throw Error("getMinLevel() - RawElement is empty");
@@ -72,5 +92,14 @@ export class PageGiveawaysRetriever {
     const couponElem = elem.find(".giv-coupon");
 
     return !couponElem.length;
+  }
+
+  private getTitle(elem: JQuery): string {
+    if (elem.length !== 1) {
+      throw Error(`getTitle() - Elem length must be 1, but instead is: ${elem}`);
+    }
+    const titleElem = elem.find(".box_pad_5 > h2 > a");
+
+    return titleElem.attr("title");
   }
 }
