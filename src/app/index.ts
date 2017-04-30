@@ -1,10 +1,10 @@
 import "rxjs";
 import { TopBarController } from "./views/TopBar/TopBarController";
 import { HttpService } from "./http/HttpService";
-import { PageGiveawaysRetriever } from "./GiveawaysEnterer/PageGiveawaysRetriever";
-import { AppState } from "./GiveawaysEnterer/AppState";
+import { PageGiveawaysRetriever } from "./giveaways/PageGiveawaysRetriever";
+import { AppState } from "./AppState";
 import { Observable } from "rxjs/Observable";
-import { Giveaway } from "./models/Giveaway";
+import { Giveaway } from "./giveaways/Giveaway";
 require("./styles.scss");
 
 export class Main {
@@ -37,6 +37,16 @@ export class Main {
         .do((giveaway: Giveaway) => giveaway.addAnimationsElement())
         .toArray()
         .subscribe((giveaways: Giveaway[]) => this.appState.giveaways = giveaways);
+
+    Observable.fromEvent(this.topBarController.getEnterButton(), "click")
+        .flatMap(() => this.appState.giveaways)
+        .filter((giveaway: Giveaway) => !giveaway.isEntered)
+        .concatMap((giveaway: Giveaway) => {
+          return Observable.of(giveaway)
+              .delay(1000)
+              .do((giveawayInner: Giveaway) => giveawayInner.enterGiveaway())
+        })
+        .subscribe((giveaway: Giveaway) => console.log(giveaway))
   }
 }
 

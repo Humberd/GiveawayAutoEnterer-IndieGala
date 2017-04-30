@@ -1,4 +1,4 @@
-import { Giveaway } from "../models/Giveaway";
+import { Giveaway } from "./Giveaway";
 import { HttpService } from "../http/HttpService";
 import { Observable } from "rxjs/Observable";
 import { TopBarController } from "../views/TopBar/TopBarController";

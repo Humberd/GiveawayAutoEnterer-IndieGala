@@ -37,7 +37,7 @@ export class Giveaway {
     return this.httpService.enterGiveaway(body);
   }
 
-  private enterGiveaway(): void {
+  public enterGiveaway(): void {
     if (this.state === GiveawayState.IN_PROGRESS) {
       throw Error("Cannot enter Giveaway, because it's already IN_PROGRESS");
     }

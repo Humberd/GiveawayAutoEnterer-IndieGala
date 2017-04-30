@@ -1,4 +1,4 @@
-import { Giveaway } from "../models/Giveaway";
+import { Giveaway } from "./giveaways/Giveaway";
 
 export class AppState {
   giveaways: Giveaway[];
