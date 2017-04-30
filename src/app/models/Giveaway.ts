@@ -43,25 +43,47 @@ export class Giveaway {
     }
 
     this.state = GiveawayState.IN_PROGRESS;
-    this.addCouponLoadingAnimation();
+    this.showLoadingFrame()
+        .switchMap(() => this.startLoadingAnimation())
+        .subscribe();
 
     this.sendEnter()
         .subscribe(
             response => {
               if (response.status === "ok") {
-                this.removeCoupon();
-                this.isEntered = true;
-                this.topBarCtrl.updateCoinsValue(response.new_amount);
+                this.successRequest(response);
               } else {
-                console.warn(`Entering a '${this.title}' giveaway failed. Reason: ${response.status}`);
+                this.failRequest(response);
               }
             }, error => {
-              console.error("There was some error: ", error)
+              this.failRequest(error);
             }, () => {
               this.state = GiveawayState.IDLE;
-              this.removeCouponLoadingAnimation();
             })
 
+  }
+
+  private successRequest(response: EnterGiveawayResponse): void {
+    this.isEntered = true;
+    this.topBarCtrl.updateCoinsValue(response.new_amount);
+    this.stopLoadingAnimation()
+        .switchMap(() => this.startSuccessAnimation())
+        .delay(5000)
+        .switchMap(() => this.stopSuccessAnimation())
+        .switchMap(() => this.hideLoadingFrame())
+        .do(() => this.removeCoupon())
+        .subscribe();
+  }
+
+  private failRequest(response: EnterGiveawayResponse): void {
+    console.warn(`Entering a '${this.title}' giveaway failed. Reason: ${response.status}`);
+
+    this.stopLoadingAnimation()
+        .switchMap(() => this.startErrorAnimation())
+        .delay(5000)
+        .switchMap(() => this.stopErrorAnimation())
+        .switchMap(() => this.hideLoadingFrame())
+        .subscribe();
   }
 
 
@@ -75,13 +97,14 @@ export class Giveaway {
   }
 
   /*
-    Adds element that will display animations
+   Adds element that will display animations
    */
   public addAnimationsElement(): void {
     Observable.of(this.element)
         .map((elem: JQuery) => elem.find(".giv-coupon"))
         .subscribe((coupon: JQuery) => coupon.after(this.animationElem));
   }
+
   /*
    Bind click event to a coupon
    */
@@ -105,21 +128,54 @@ export class Giveaway {
         .subscribe((coupon: JQuery) => coupon.remove());
   }
 
-  /*
-   Adds a loading animation of a coupon
-   */
-  private addCouponLoadingAnimation(): void {
-    Observable.of(this.element)
-        .map((elem: JQuery) => elem.find(".giv-coupon"))
-        .subscribe((coupon: JQuery) => console.log("Adding coupon loading animation..."));
+
+  //////////////////////////////////////////
+
+  private showLoadingFrame(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame"))
+        .do((elem: JQuery) => elem.removeClass("gae-hide"));
   }
 
-  /*
-   Removes a loading animation of a coupon
-   */
-  private removeCouponLoadingAnimation(): void {
-    Observable.of(this.element)
-        .map((elem: JQuery) => elem.find(".giv-coupon"))
-        .subscribe((coupon: JQuery) => console.log("Removing coupon loading animation."));
+  private hideLoadingFrame(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame"))
+        .do((elem: JQuery) => elem.addClass("gae-hide"));
+  }
+
+  private startLoadingAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .loader"))
+        .do((elem: JQuery) => elem.removeClass("gae-hide"));
+  }
+
+  private stopLoadingAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .loader"))
+        .do((elem: JQuery) => elem.addClass("gae-hide"));
+  }
+
+  private startSuccessAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .success"))
+        .do((elem: JQuery) => elem.removeClass("gae-hide"));
+  }
+
+  private stopSuccessAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .success"))
+        .do((elem: JQuery) => elem.addClass("gae-hide"));
+  }
+
+  private startErrorAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .error"))
+        .do((elem: JQuery) => elem.removeClass("gae-hide"));
+  }
+
+  private stopErrorAnimation(): Observable<JQuery> {
+    return Observable.of(this.element)
+        .map((elem: JQuery) => elem.find(".gae-loading-frame .error"))
+        .do((elem: JQuery) => elem.addClass("gae-hide"));
   }
 }

@@ -37,12 +37,6 @@ export class Main {
         .do((giveaway: Giveaway) => giveaway.addAnimationsElement())
         .toArray()
         .subscribe((giveaways: Giveaway[]) => this.appState.giveaways = giveaways);
-
-    console.log(this.appState);
-    // Observable.fromEvent(this.topBar.getEnterButton(), "click")
-    //     .switchMap(() => this.coupons.getCouponsObs())
-    //     .subscribe((item: JQuery) => item.click());
-
   }
 }
 
