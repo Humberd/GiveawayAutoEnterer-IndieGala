@@ -27,9 +27,7 @@
 	"description": "IndieGala Giveaways AutoEnterer",
 	"background": {
 		"scripts": [
-			"hot-reload.js",
-			"Rx.js",
-			"background.js"
+			"hot-reload.js"
 		]
 	},
 	"browser_action": {

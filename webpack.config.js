@@ -6,8 +6,7 @@ const webpack = require("webpack");
 
 module.exports = {
 	entry: {
-		index: ["./src/app/index.ts"],
-		background: ["./src/background/background.ts"]
+		index: ["./src/app/index.ts"]
 	},
 	watch: true,
 	watchOptions: {
