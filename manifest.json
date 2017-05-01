@@ -7,7 +7,7 @@
 		"48": "./icons/48x48.png",
 		"128": "./icons/128x128.png"
 	},
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"permissions": [
 		"notifications",
 		"storage",
@@ -33,7 +33,7 @@
 	"description": "A page extension that automates entering giveaways on indiegala.com",
 	"background": {
 		"scripts": [
-			"hot-reload.js"
+//			"hot-reload.js"
 		]
 	},
 	"browser_action": {
