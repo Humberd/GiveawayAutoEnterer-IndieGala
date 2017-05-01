@@ -24,8 +24,8 @@
 				"styles.css"
 			],
 			"js": [
-				"jquery.js",
-				"Rx.js",
+				"jquery.min.js",
+				"Rx.min.js",
 				"index.js"
 			]
 		}

@@ -8,6 +8,7 @@ import { Giveaway } from "./giveaways/Giveaway";
 import { AllGiveaways } from "./giveaways/AllGiveaways";
 require("./styles.scss");
 
+
 export class Main {
   private appState: AppState;
   private topBarController: TopBarController;

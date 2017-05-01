@@ -42,10 +42,10 @@ module.exports = {
 				from: "manifest.json",
 				to: "./"
 			}, {
-				from: "./node_modules/jquery/dist/jquery.js",
+				from: "./node_modules/jquery/dist/jquery.min.js",
 				to: "./"
 			}, {
-				from: "./node_modules/rxjs/bundles/Rx.js",
+				from: "./node_modules/rxjs/bundles/Rx.min.js",
 				to: "./"
 			}, {
 				from: "./src/background/hot-reload.js",
@@ -56,8 +56,7 @@ module.exports = {
 			}
 		]),
 		new ExtractTextPlugin('styles.css'),
-		new CleanWebpackPlugin("dist"),
-		// new webpack.IgnorePlugin(/rxjs$/)
+		new CleanWebpackPlugin("dist")
 	],
 	resolve: {
 		extensions: [".ts", ".js"]
