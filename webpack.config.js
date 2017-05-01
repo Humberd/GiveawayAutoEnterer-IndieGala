@@ -50,6 +50,9 @@ module.exports = {
 			}, {
 				from: "./src/background/hot-reload.js",
 				to: "./"
+			}, {
+				from: "./assets/",
+				to: "./"
 			}
 		]),
 		new ExtractTextPlugin('styles.css'),
