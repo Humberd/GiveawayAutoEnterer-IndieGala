@@ -38,7 +38,8 @@ export class Main {
   }
 
   private bindCallbacks(): void {
-    Observable.of(this.giveawaysRetriever.getAllGiveaways())
+    Observable.timer(4000)
+        .map(() => this.giveawaysRetriever.getAllGiveaways())
         .do((giveaways) => this.appState.giveaways = giveaways)
         .do(() => console.info("Preparing coupons..."))
         .flatMap(giveaways => giveaways)
@@ -54,7 +55,7 @@ export class Main {
     Observable.fromEvent(this.topBarController.getEnterButton(), "click")
         .subscribe(
             () => this.allGiveaways.startSequence(),
-            (error) => console.error("There was an error in enter many giveaways: ", error),
+            (error: any) => console.error("There was an error in enter many giveaways: ", error),
             () => console.log("Completed"));
 
     Observable.fromEvent(this.topBarController.getStopButton(), "click")

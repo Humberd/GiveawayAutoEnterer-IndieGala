@@ -11,7 +11,7 @@ export class PageGiveawaysRetriever {
   }
 
   public getAllGiveaways(): Giveaway[] {
-    const rawGiveawayElements = $(".tickets-col");
+    const rawGiveawayElements = $("#ajax-giv-list-cont .tickets-col");
 
     const result: Giveaway[] = [];
 
@@ -76,7 +76,7 @@ export class PageGiveawaysRetriever {
     }
     const rawText = elem.find(".ticket-right > .relative[rel]").attr("rel");
 
-    return parseInt(rawText);
+    return parseInt(String(rawText));
   }
 
   private getCoinsPrice(elem: JQuery): number {
@@ -103,6 +103,6 @@ export class PageGiveawaysRetriever {
     }
     const titleElem = elem.find(".box_pad_5 > h2 > a");
 
-    return titleElem.attr("title");
+    return String(titleElem.attr("title"));
   }
 }
