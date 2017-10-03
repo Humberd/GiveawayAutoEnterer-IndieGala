@@ -7,7 +7,7 @@
 		"48": "./icons/48x48.png",
 		"128": "./icons/128x128.png"
 	},
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"permissions": [
 		"notifications",
 		"storage",
