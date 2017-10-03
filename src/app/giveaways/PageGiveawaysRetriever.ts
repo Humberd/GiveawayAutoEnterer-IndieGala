@@ -44,30 +44,19 @@ export class PageGiveawaysRetriever {
       throw Error(`getMinLevel() - Elem length must be 1, but instead is: ${elem}`);
     }
 
-    const rawElement = elem.find(".type-level-cont");
+    const rawElement = elem.find(".type-level-cont .type-level span");
 
     if (!rawElement.length) {
       throw Error("getMinLevel() - RawElement is empty");
     }
 
-    const rawText = rawElement.text();
-    const index = rawText.indexOf("+");
+    const rawText = rawElement.text().trim();
+    const potentialMinLevel = parseInt(rawText);
 
-    let reversedResult: any[] = [];
-
-    for (let i = index - 1; ; --i) {
-      if (rawText[i] === " ") {
-        break;
-      }
-
-      if (i < 0) {
-        throw Error("getMinLevel - Infinite loops");
-      }
-
-      reversedResult.push(rawText[i])
+    if (isNaN(potentialMinLevel)) {
+      throw Error(`getMinLevel() - could not properly parse a value: "${rawText}". It could potentially by caused by selector change.`)
     }
-
-    return parseInt(reversedResult.reverse().join(""));
+    return potentialMinLevel;
   }
 
   private getId(elem: JQuery): number {
